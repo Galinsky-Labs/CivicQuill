@@ -119,22 +119,26 @@ export function createCivicService({ identity, transaction, documents, proposals
     }),
     reviewQueue: (credentials) => asReviewer(credentials, async (db) =>
       ({ items: (await db.query("SELECT * FROM app_civic.official_requests WHERE status='pending' ORDER BY created_at LIMIT 100")).rows.map((r) => ({ ...officialView(r), accountId: r.account_id, evidenceUrl: r.evidence_url })) })),
-    review: (credentials, id, body) => asReviewer(credentials, async (db, reviewerId) => {
-      need(UUID.test(id) && ["approve", "reject"].includes(body.decision), "INVALID_REVIEW");
-      const note = typeof body.note === "string" ? body.note.slice(0, 1000) : null;
-      const row = (await db.query(
-        "UPDATE app_civic.official_requests SET status=$2,review_note=$3,reviewed_by=$4,reviewed_at=$5 WHERE id=$1 AND status='pending' RETURNING *",
-        [id, body.decision === "approve" ? "approved" : "rejected", note, reviewerId, now()])).rows[0];
-      need(row, "REQUEST_NOT_PENDING", 409);
-      need(row.account_id !== reviewerId, "SELF_REVIEW_FORBIDDEN", 403);
-      const view = officialView(row);
-      let grant = null;
+    async review(credentials, id, body) {
+      const decided = await asReviewer(credentials, async (db, reviewerId) => {
+        need(UUID.test(id) && ["approve", "reject"].includes(body.decision), "INVALID_REVIEW");
+        const note = typeof body.note === "string" ? body.note.slice(0, 1000) : null;
+        const row = (await db.query(
+          "UPDATE app_civic.official_requests SET status=$2,review_note=$3,reviewed_by=$4,reviewed_at=$5 WHERE id=$1 AND status='pending' RETURNING *",
+          [id, body.decision === "approve" ? "approved" : "rejected", note, reviewerId, now()])).rows[0];
+        need(row, "REQUEST_NOT_PENDING", 409);
+        need(row.account_id !== reviewerId, "SELF_REVIEW_FORBIDDEN", 403);
+        return { row, view: officialView(row) };
+      });
+      let grant = null, entitlementApplied = false;
       if (body.decision === "approve") {
-        grant = officialGrant({ office: view.office, jurisdiction: view.jurisdiction, termStart: view.termStart, termEnd: view.termEnd });
-        if (grantOfficial) await grantOfficial(db, { accountId: row.account_id, grant, sourceId: row.id });
+        grant = officialGrant({ office: decided.view.office, jurisdiction: decided.view.jurisdiction, termStart: decided.view.termStart, termEnd: decided.view.termEnd });
+        // Issued through the engine's entitlement store in its own audited,
+        // administrator-checked transaction; idempotent per request.
+        if (grantOfficial) { await grantOfficial(credentials, { accountId: decided.row.account_id, grant, sourceId: decided.row.id }); entitlementApplied = true; }
       }
-      return { request: view, grant, entitlementApplied: Boolean(grant && grantOfficial) };
-    }),
+      return { request: decided.view, grant, entitlementApplied };
+    },
     publicOfficials: () => transaction(async (db) => {
       await db.query("SELECT set_config('dge.public_directory','officials',true)");
       const rows = (await db.query("SELECT * FROM app_civic.official_requests WHERE public_badge AND status='approved' AND term_end>=CURRENT_DATE ORDER BY level,jurisdiction LIMIT 500")).rows;
@@ -368,7 +372,12 @@ export const civicExtension = Object.freeze({
     const service = createCivicService({
       ...services,
       isPlatformAdmin: async (credentials) => Boolean(await services.isPlatformAdmin?.(credentials)),
-      grantOfficial: services.grantOfficial ?? null,
+      grantOfficial: services.entitlements
+        ? (credentials, { accountId, grant, sourceId }) => services.entitlements.createGrant(credentials, {
+            subject: { kind: "account", id: accountId }, resource: "document-create", quantity: grant.monthlyCap, period: "month",
+            expiresAt: grant.expiresAt, provenance: "verified-official", reason: grant.purpose.slice(0, 200), idempotencyKey: "civic-official:" + sourceId,
+          })
+        : null,
     });
     return [{ routes: createCivicRoutes(service), bodyLimit: (path) => (path.includes("/civic/bills") ? 65536 : 16384) }];
   },

@@ -5,6 +5,7 @@ import {PGlite} from "@electric-sql/pglite";
 import {createIdentityStore,applyIdentityMigrations} from "@distributed-governance/engine/identity";
 import {createPlatform,applyExtensionMigrations} from "@distributed-governance/engine/platform";
 import {civicExtension} from "../server/civic-extension.mjs";
+import {changePlatformAdmin} from "@distributed-governance/engine/scripts/grant-platform-admin.mjs";
 
 const origin="https://civic.example";
 let db,platform,identity,admin,sponsor,citizen,outsider,tenantId;
@@ -25,7 +26,9 @@ before(async()=>{
   identity=createIdentityStore({transaction,origin,sessionKey:randomBytes(32),stateKey:randomBytes(32)});
   platform=createPlatform({identity,transaction,login:{},origin,extensions:[civicExtension]});
   admin=await user();sponsor=await user();citizen=await user();outsider=await user();
-  platform.services.isPlatformAdmin=async c=>c.sessionToken===admin.sessionToken;
+  await changePlatformAdmin(fn=>db.transaction(fn),{action:"grant",accountId:admin.accountId,reason:"Test platform administrator"});
+  // Drafting beyond the weekly free allowance needs a grant, as in production.
+  await platform.services.entitlements.createGrant(admin,{subject:{kind:"account",id:sponsor.accountId},resource:"document-create",quantity:null,period:"none",provenance:"administrator",reason:"Test sponsor",idempotencyKey:"test-sponsor-grant"});
   ({tenantId}=await identity.createTenant(sponsor));
   const invite=await identity.invite(sponsor,tenantId,citizen.accountId,"participant");
   await identity.acceptInvitation(citizen,tenantId,invite.invitationToken);
@@ -68,6 +71,9 @@ test("official verification is reviewed by a platform administrator, never self-
   assert.equal(reviewed.body.request.status,"approved");
   assert.equal(reviewed.body.grant.unlimited,true);
   assert.equal(reviewed.body.grant.overCapBehaviour,"explicit-paid-offer");
+  assert.equal(reviewed.body.entitlementApplied,true);
+  const status=await call("/api/entitlements",{who:citizen});
+  assert.ok(JSON.stringify(status.body).includes("verified-official"),"the official's account now holds the engine grant");
   const badges=(await call("/api/public/civic/officials")).body.items;
   assert.equal(badges.length,1);
   assert.equal(badges[0].office,"State Representative");
@@ -87,6 +93,7 @@ test("trust tiers are issued only by reviewers and analytics name every denomina
 
 test("public input: sponsor responses, consultation series and the disposition report never change the source",async()=>{
   const created=await call(`/api/workspaces/${tenantId}/civic/bills`,{who:sponsor,method:"POST",body:{jurisdictionId:"us-local",title:"Bike Lane Ordinance",commandId:randomUUID(),parts:["operative"],values:{purpose:"add protected bike lanes",body:"City Council",locality:"Columbus",operative:["The city shall build protected bike lanes on High Street."]}}});
+  assert.equal(created.status,200,JSON.stringify(created.body));
   const id=created.body.document.id;
   assert.equal((await call(`/api/workspaces/${tenantId}/civic/consultations`,{who:sponsor,method:"POST",body:{documentId:id}})).status,409,"a consultation needs a frozen public-input source");
   const frozen=await platform.services.documents.freezeForInput(sponsor,tenantId,id,{commandId:randomUUID(),expectedVersion:1});
