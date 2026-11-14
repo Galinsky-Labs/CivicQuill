@@ -20,7 +20,7 @@
   },
   "description": "CivicQuill: legislative collaboration on the Distributed Governance Engine",
   "dependencies": {
-    "@distributed-governance/engine": "file:../distributed-governance-engine"
+    "@distributed-governance/engine": "https://codeload.github.com/Galinsky-Labs/Distributed-Governance-Engine/tar.gz/9adae9205fbca8d70612cfc6010f4a5f212e8baa"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.10",
