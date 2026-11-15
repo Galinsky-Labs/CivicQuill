@@ -57,3 +57,23 @@ test("a bill cannot switch to public input while its amendment vote is open; aft
   assert.equal(frozen.body.document.mode,"public-input");
   assert.match(JSON.stringify(frozen.body.document.content),/report quarterly/);
 });
+
+test("public consultation: a published support floor is reported on the advisory result and never adopts",async()=>{
+  const doc=structuredClone(createLegalDocument({id:randomUUID(),tenantId,title:"Parks Ordinance"}));
+  doc.content[0].inlines=[{kind:"text",text:"Parks close at sunset."}];
+  await s.documents.create(sponsor,tenantId,{document:doc,commandId:randomUUID(),disclosure:"publish-all-revisions-v1"});
+  await s.documents.freezeForInput(sponsor,tenantId,doc.id,{commandId:randomUUID(),expectedVersion:1});
+  const p=await s.proposals.create(citizen,tenantId,doc.id,{baseVersion:2,selection:{blockId:doc.content[0].id,start:15,end:21,quote:"sunset"},
+    replacement:"10 p.m.",rationale:"Evening use.",commandId:randomUUID(),disclosure:"publish-proposal-v1"});
+  now=Date.now()+1000;
+  const opened=await s.decisions.open(sponsor,tenantId,doc.id,p.proposal.id,{hours:1,commandId:randomUUID(),
+    policySettings:{supportFloor:{minimumParticipants:"2",supportNumerator:"1",supportDenominator:"2"}}});
+  assert.match(opened.rule.supportFloor,/at least 2 participants/);
+  for(const who of [sponsor,citizen])await s.decisions.cast(who,tenantId,doc.id,p.proposal.id,{choice:"yes",expectedVersion:0,commandId:randomUUID()});
+  now+=HOUR+1;
+  const {certificate}=await s.decisions.close(sponsor,tenantId,doc.id,p.proposal.id);
+  assert.equal(certificate.outcome.status,"advisory");
+  assert.equal(certificate.outcome.supportFloor.status,"support-floor-met");
+  assert.equal(certificate.canAdopt,false);
+  assert.equal((await s.documents.read(sponsor,tenantId,doc.id)).version,2,"the fixed source never changes");
+});
