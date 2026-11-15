@@ -1,4 +1,4 @@
-name: Foundation verification
+name: Application verification
 on:
   pull_request:
   push:
@@ -8,8 +8,32 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - name: Verify runtime
-        run: docker run --rm -v "$PWD:/work" -w /work node:24.19.0-alpine npm run check
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: 24.19.0
+          cache: npm
+      - name: Install the integrity-pinned engine release and dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Registry, security status and integration tests against the pinned engine
+        run: npm run check
+      - name: Build the browser application
+        run: npm run build
+  image:
+    name: Build the deployable container
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Build the application image
+        run: docker build --progress=plain --tag quill-app:verify .
+      - name: Refuse startup without database, keys and origin configuration
+        run: |
+          set +e
+          docker run --rm --network none quill-app:verify > "$RUNNER_TEMP/startup.log" 2>&1
+          code=$?
+          set -e
+          test "$code" -ne 0
+          grep -Fq 'startup failed' "$RUNNER_TEMP/startup.log"

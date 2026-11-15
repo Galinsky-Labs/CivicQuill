@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "repository": "neophilism/CivicQuill",
+  "repository": "Galinsky-Labs/CivicQuill",
   "roadmapVersion": 2,
   "planVerified": true,
   "plannedPrCount": 14,
@@ -16,7 +16,7 @@
       "dependsOn": [],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-001"
         }
       ],
@@ -42,7 +42,7 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-038"
         }
       ],
@@ -55,8 +55,11 @@
         "Consumer contract, keyboard navigation and authenticated browser tests."
       ],
       "specification": "docs/prs/LEG-002.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "implemented",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     },
     {
       "id": "LEG-003",
@@ -68,15 +71,15 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-006"
         },
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-007"
         },
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-025"
         }
       ],
@@ -89,8 +92,11 @@
         "Jurisdiction fixtures, template migration and PDF/DOCX golden comparisons."
       ],
       "specification": "docs/prs/LEG-003.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "implemented",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     },
     {
       "id": "LEG-004",
@@ -102,7 +108,7 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-011"
         }
       ],
@@ -115,8 +121,11 @@
         "Identity disclosure, forged verification, duplicate cohort membership and eligibility-expiry tests."
       ],
       "specification": "docs/prs/LEG-004.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "implemented",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     },
     {
       "id": "LEG-005",
@@ -128,7 +137,7 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-029"
         }
       ],
@@ -141,8 +150,11 @@
         "Impersonation, staff revocation, grant expiration, quota changes and private verification evidence tests."
       ],
       "specification": "docs/prs/LEG-005.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "implemented",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     },
     {
       "id": "LEG-006",
@@ -155,11 +167,11 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-010"
         },
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-014"
         }
       ],
@@ -172,8 +184,11 @@
         "All mutation paths, concurrent sponsor changes, immutable-link and export comparison browser tests."
       ],
       "specification": "docs/prs/LEG-006.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "implemented",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     },
     {
       "id": "LEG-007",
@@ -186,7 +201,7 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-014"
         }
       ],
@@ -199,8 +214,11 @@
         "Mass-vote races, overlapping amendments, threshold boundaries, challenge/revote and actual adoption journey tests."
       ],
       "specification": "docs/prs/LEG-007.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "implemented",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     },
     {
       "id": "LEG-008",
@@ -213,11 +231,11 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-015"
         },
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-024"
         }
       ],
@@ -230,8 +248,11 @@
         "Role equality, evidence ACL, malicious attachment, attribution and large research navigation tests."
       ],
       "specification": "docs/prs/LEG-008.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "implemented",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     },
     {
       "id": "LEG-009",
@@ -243,15 +264,15 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-016"
         },
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-017"
         },
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-033"
         }
       ],
@@ -264,8 +285,11 @@
         "Brigading, paid-amplification denial, novice walkthrough, keyboard, screen-reader and multi-language flows."
       ],
       "specification": "docs/prs/LEG-009.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "implemented",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     },
     {
       "id": "LEG-010",
@@ -277,7 +301,7 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-030"
         }
       ],
@@ -290,8 +314,11 @@
         "Payment sandbox, quota concurrency, partial refund, free-week timing and grant-to-paid consent tests."
       ],
       "specification": "docs/prs/LEG-010.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "implemented",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     },
     {
       "id": "LEG-011",
@@ -304,7 +331,7 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-023"
         }
       ],
@@ -317,8 +344,11 @@
         "Edited manifest, missing receipt, reorg, public PII and historical export tests."
       ],
       "specification": "docs/prs/LEG-011.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "implemented",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     },
     {
       "id": "LEG-012",
@@ -331,7 +361,7 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-027"
         }
       ],
@@ -344,8 +374,11 @@
         "Million-record streaming fixture, consent revocation display, private names, frozen edition and sponsor export tests."
       ],
       "specification": "docs/prs/LEG-012.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "implemented",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     },
     {
       "id": "LEG-013",
@@ -359,11 +392,11 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-028"
         },
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-031"
         }
       ],
@@ -376,8 +409,11 @@
         "Role matrix, tour keyboard/mobile flows, analytics reconciliation and audit tests."
       ],
       "specification": "docs/prs/LEG-013.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "implemented",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     },
     {
       "id": "LEG-014",
@@ -389,7 +425,7 @@
       ],
       "externalDependencies": [
         {
-          "repository": "neophilism/Distributed-Governance-Engine",
+          "repository": "Galinsky-Labs/Distributed-Governance-Engine",
           "unitId": "DCE-039"
         }
       ],
@@ -402,8 +438,11 @@
         "Current-head full CI, live smoke, accessibility, abuse/load and backup/restore evidence; human review package after deployment."
       ],
       "specification": "docs/prs/LEG-014.md",
-      "implementationStatus": "planned",
-      "operationalAcceptance": "unverified"
+      "implementationStatus": "partial",
+      "operationalAcceptance": "unverified",
+      "contributingPrs": [
+        3
+      ]
     }
   ],
   "pullRequests": [
@@ -412,7 +451,7 @@
       "number": 1,
       "title": "LEG-001: Establish CivicQuill and shared engine contracts",
       "state": "open",
-      "url": "https://github.com/neophilism/CivicQuill/pull/1",
+      "url": "https://github.com/Galinsky-Labs/CivicQuill/pull/1",
       "createdAt": "2026-10-17T02:50:36Z",
       "updatedAt": "2026-10-17T02:50:36Z",
       "mergedAt": null,
