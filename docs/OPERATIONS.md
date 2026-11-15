@@ -11,3 +11,13 @@ Registration: public GitHub source repository Galinsky-Labs/CivicQuill, immutabl
 PR protocol: use a foundation bootstrap commit, then create dependency-ordered PRs with stable IDs, actual GitHub mappings and required CI. All planned PR specs are reviewable documents; opening every dependency-blocked empty PR is not useful. Use scripts/verify-pr-merge.mjs for exact-head verification and merging only when authenticated and green. Missing/rate-limited/unstarted/skipped checks never count as passed.
 
 Deployment requires readiness/health, isolated resource identity, migration and rollback records, live multiuser browser journeys, real anchor receipts and source-bound security evidence. Archive backups/recovery tests and cost/scale assumptions. Human review is a post-deployment handoff, never a fictional completed audit.
+
+## Monetization (LEG-010)
+
+Payments use the engine's Stripe provider. They stay off until all three of the following are in place:
+
+1. `STRIPE_SECRET_KEY` (a restricted `sk_live_…` or `sk_test_…` key) is set on the Render service.
+2. `STRIPE_WEBHOOK_SECRET` (`whsec_…`, for an endpoint pointing at `https://civicquill.onrender.com/api/billing/webhooks/stripe`) is set on the Render service.
+3. A platform administrator has applied `civicProductSettings(prices)` from `src/catalog.mjs` at `{scope:"product",product:"civic"}`.
+
+Prices are owner decisions and have no defaults. A plan without a price is not purchasable. Readers, discussants and voters never need to pay. The weekly free allowance (1 per account) resets on New York calendar weeks.
