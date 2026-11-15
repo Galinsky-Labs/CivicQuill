@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "repository": "neophilism/CivicQuill",
+  "repository": "Galinsky-Labs/CivicQuill",
   "kind": "unclassified",
   "monitoring": {
     "mode": "inventory"

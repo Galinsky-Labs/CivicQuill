@@ -1,6 +1,6 @@
 {
   "purpose": "read-only exact shared engine release artifact for offline consumer contract tests; do not fork",
-  "repository": "neophilism/Distributed-Governance-Engine",
+  "repository": "Galinsky-Labs/Distributed-Governance-Engine",
   "sourceCommit": "d60d856da46768f3ad5f3c0ac1ad0b1a78b9a8a6",
   "artifact": "engine-foundation.tgz",
   "sha256": "51de27c826b945f6273526b198c4b955fa7be91417fc69d689b8451396b429df",
