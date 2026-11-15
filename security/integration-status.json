@@ -11,9 +11,13 @@
     "acknowledgment": null
   },
   "deployment": {
-    "state": "not-deployed",
-    "url": null
+    "state": "deployed",
+    "url": "https://civicquill.onrender.com",
+    "platform": "Render free web service + Neon PostgreSQL 17 (Galinsky Labs)",
+    "releaseCommit": "e065b103f368076d96b95d0c1eb818594a6e49c5",
+    "liveJourney": "16/16 checks passed on 2026-11-15 (Distributed-Governance-Engine docs/LIVE_VERIFICATION.md)",
+    "operationalAcceptance": "unverified: owner review deferred to handoff"
   },
   "foundationUnitAccepted": false,
-  "githubSourcePublication": "foundation PR in preparation"
+  "githubSourcePublication": "Product implementation in Galinsky-Labs/CivicQuill#3"
 }
