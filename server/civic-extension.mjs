@@ -5,6 +5,7 @@
 import { readFileSync } from "node:fs";
 import { randomUUID, createHash } from "node:crypto";
 import { boundedJson, HttpError } from "@distributed-governance/engine/account-http";
+import { defineExtension } from "@distributed-governance/engine/extension-sdk";
 import { JURISDICTIONS } from "../src/jurisdictions.mjs";
 import { buildBill, TEMPLATE_PARTS } from "../src/templates.mjs";
 import { validateOfficialRequest, officialGrant, officialStatus } from "../src/officials.mjs";
@@ -364,7 +365,7 @@ export function createCivicRoutes(service) {
 }
 
 /** The CivicQuill extension consumed by the engine composition root. */
-export const civicExtension = Object.freeze({
+export const civicExtension = defineExtension({
   id: "civic",
   migrations: [migration("001-civic.sql")],
   pagePaths: CIVIC_PAGES,
@@ -381,4 +382,4 @@ export const civicExtension = Object.freeze({
     });
     return [{ routes: createCivicRoutes(service), bodyLimit: (path) => (path.includes("/civic/bills") ? 65536 : 16384) }];
   },
-});
+}, { engine: "^1.1.0", profile: "civic", capabilities: ["identity", "documents:read", "proposals:read", "billing", "admin"], surfaces: ["routes", "migrations", "pages"] });
